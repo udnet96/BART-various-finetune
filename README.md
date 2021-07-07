@@ -108,14 +108,48 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 fairseq-train cnn_dm-bin \
     --find-unused-parameters;
 ```
 
-To conduct another fine-tuning, 
-
 ## Low-resource
-'''
+```
 bash run_init.sh xsum-bin_low
-'''
+```
 
 ## Full-data
-'''
+```
 bash run_init_full.sh xsum-bin
-'''
+```
+
+To conduct another fine-tuning, you need to modify the bash file.
+
+validation options : ROUGE_valdation, Mid-epoch vaildation
+```
+TRAIN_FILE=fairseq_cli/train.py
+#TRAIN_FILE=fairseq_cli/train_midval_full.py
+#TRAIN_FILE=fairseq_cli/train_midval.py
+#TRAIN_FILE=fairseq_cli/train_Rval_midval_cnndmlow.py
+#TRAIN_FILE=fairseq_cli/train_Rval_cnndmlow.py
+#TRAIN_FILE=fairseq_cli/train_Rval_midval_cnndmlow.py
+```
+And also you have to match the train file with your criterion above (if you use another criterion)
+```
+#TRAIN_FILE=fairseq_cli/train_CS_Rval_cnndmlow.py
+#TRAIN_FILE=fairseq_cli/train_R3F_CS_Rstoplow_midval.py
+#TRAIN_FILE=fairseq_cli/train_RRL_Rval_cnndmlow.py
+#TRAIN_FILE=fairseq_cli/train_RRL_Rval_midval_cnndmlow.py
+#TRAIN_FILE=fairseq_cli/train_rougeRL_Rval_midval.py
+#TRAIN_FILE=fairseq_cli/train_R3F_cossim_Rstop.py
+#TRAIN_FILE=fairseq_cli/train_R3F_cossim_Rstoplow_Sbert.py
+```
+Criterion : 3 options - R3F loss, Cosine-similarity(CS) loss, ROUGE_reinforcement loss (R3F + CS also available)
+```
+#CRITERIONN=r3f
+#CRITERIONN=r3f_CS0.3
+#CRITERIONN=CS0.3
+#CRITERIONN=R_RL
+CRITERIONN=norm
+
+TRAIN_CRITERION=label_smoothed_cross_entropy
+#TRAIN_CRITERION=label_smoothed_cross_entropy_r3f
+#TRAIN_CRITERION=label_smoothed_cross_entropy_r3f_cossim
+#TRAIN_CRITERION=label_smoothed_cross_entropy_cossim
+#TRAIN_CRITERION=semantic_similarity_loss
+```
