@@ -13,7 +13,7 @@ echo "DEVICE : ${DEVICE}"
 #RESIDUAL_CHANGE=2step_reduced0.75_LNatonce
 
 TIMESTEP=1
-while [ $TIMESTEP -le 2 ]
+while [ $TIMESTEP -le 1 ]
 do
 echo "timestep : ${TIMESTEP}"
 #SEED=${RANDOM}
@@ -65,8 +65,8 @@ R3F_LAMBDA=0.1
 
 STOP_CRITERIA=xentstop
 #STOP_CRITERIA=Rstop
-#TRAIN_FILE=fairseq_cli/train.py
-TRAIN_FILE=fairseq_cli/train_CS.py
+TRAIN_FILE=fairseq_cli/train.py
+#TRAIN_FILE=fairseq_cli/train_CS.py
 #TRAIN_FILE=fairseq_cli/train2.py
 #TRAIN_FILE=fairseq_cli/train_midval.py
 #TRAIN_FILE=fairseq_cli/train_midval_Rstop.py
@@ -82,13 +82,13 @@ TRAIN_FILE=fairseq_cli/train_CS.py
 
 #CRITERIONN=r3f
 #CRITERIONN=r3f_wolog
-CRITERIONN=r3f_cossim0.3
+#CRITERIONN=r3f_cossim0.3
 #CRITERIONN=cossim0.3
-#CRITERIONN=norm
+CRITERIONN=norm
 
-#TRAIN_CRITERION=label_smoothed_cross_entropy
+TRAIN_CRITERION=label_smoothed_cross_entropy
 #TRAIN_CRITERION=label_smoothed_cross_entropy_r3f
-TRAIN_CRITERION=label_smoothed_cross_entropy_r3f_cossim
+#TRAIN_CRITERION=label_smoothed_cross_entropy_r3f_cossim
 #TRAIN_CRITERION=label_smoothed_cross_entropy_cossim2
 #TRAIN_CRITERION=semantic_similarity_loss
 
@@ -144,7 +144,7 @@ CUDA_VISIBLE_DEVICES=${DEVICE} python ${TRAIN_FILE} ${bbin} \
   --find-unused-parameters --bpe gpt2;
 wait $!
 
-SAMPLE_SIZE=7330
+#SAMPLE_SIZE=7330
 #CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_Forunsup.py ${SAVE_DIR}/checkpoint_best.pt 0 '' ${SAMPLE_SIZE}
 #CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_fortest_cnndm.py ${SAVE_DIR}/checkpoint_best.pt 0 True
 #CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_Forunsup.py ${SAVE_DIR}/checkpoint_best.pt 0 True
