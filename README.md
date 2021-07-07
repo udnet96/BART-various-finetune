@@ -68,5 +68,54 @@ files2rouge test.hypo.tokenized test.hypo.target
 
 ## Finetuning
 
-- [Finetuning on CNN-DM](README.summarization.md)
+Xsum text data : [https://github.com/EdinburghNLP/XSum](https://github.com/EdinburghNLP/XSum)
 
+CNNDM text data : [https://github.com/abisee/cnn-dailymail](https://github.com/abisee/cnn-dailymail)
+
+- [Finetuning on CNN-DM](README.summarization.md)
+- 
+Follow 1-3 to abtain processed training data 
+
+Example normal fine-tuning on CNN-DM
+```bash
+TOTAL_NUM_UPDATES=20000  
+WARMUP_UPDATES=500      
+LR=3e-05
+MAX_TOKENS=2048
+UPDATE_FREQ=4
+BART_PATH=/path/to/bart/model.pt
+
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 fairseq-train cnn_dm-bin \
+    --restore-file $BART_PATH \
+    --max-tokens $MAX_TOKENS \
+    --task translation \
+    --source-lang source --target-lang target \
+    --truncate-source \
+    --layernorm-embedding \
+    --share-all-embeddings \
+    --share-decoder-input-output-embed \
+    --reset-optimizer --reset-dataloader --reset-meters \
+    --required-batch-size-multiple 1 \
+    --arch bart_large \
+    --criterion label_smoothed_cross_entropy \
+    --label-smoothing 0.1 \
+    --dropout 0.1 --attention-dropout 0.1 \
+    --weight-decay 0.01 --optimizer adam --adam-betas "(0.9, 0.999)" --adam-eps 1e-08 \
+    --clip-norm 0.1 \
+    --lr-scheduler polynomial_decay --lr $LR --total-num-update $TOTAL_NUM_UPDATES --warmup-updates $WARMUP_UPDATES \
+    --fp16 --update-freq $UPDATE_FREQ \
+    --skip-invalid-size-inputs-valid-test \
+    --find-unused-parameters;
+```
+
+To conduct another fine-tuning, 
+
+## Low-resource
+'''
+bash run_init.sh xsum-bin_low
+'''
+
+## Full-data
+'''
+bash run_init_full.sh xsum-bin
+'''
