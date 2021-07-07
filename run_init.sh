@@ -12,8 +12,8 @@ DEVICE=0
 echo "DEVICE : ${DEVICE}"
 #RESIDUAL_CHANGE=2step_reduced0.75_LNatonce
 
-TIMESTEP=7
-while [ $TIMESTEP -le 7 ]
+TIMESTEP=1
+while [ $TIMESTEP -le 1 ]
 do
 echo "timestep : ${TIMESTEP}"
 #SEED=${RANDOM}
@@ -24,18 +24,18 @@ TOTAL_NUM_UPDATES=30000
 TRAIN_STEPS=10000000
 VERSION=${TIMESTEP}
 
-#model_from=bl
+model_from=bl
 #model_from=31.3
 #model_from=33.3
-model_from=39.03
+#model_from=39.03
 
 #model_from=blx
 #model_from=43.18
 #model_from=43.62
 #model_from=43.81
 
-#BART_PATH=./checkpoints/bart.large/model.pt
-BART_PATH=./checkpoints_low/ForRefine_39.03_cnndmlow/frombl_Rstop_r3f/checkpoint_best_loss_7.44.pt
+BART_PATH=./checkpoints/bart.large/model.pt
+#BART_PATH=./checkpoints_low/ForRefine_39.03_cnndmlow/frombl_Rstop_r3f/checkpoint_best_loss_7.44.pt
 #BART_PATH=./checkpoints/Forfull_refine_43.18_b_best/checkpoint.best_loss_4.12.pt
 #BART_PATH=./checkpoints/bart.large.xsum/model.pt
 #BART_PATH=./checkpoints/bart.large.cnn/model.pt
@@ -72,14 +72,14 @@ FT_PATIENCE=15
 NOISE_TYPE=uniform
 R3F_LAMBDA=0.1
 
-#STOP_CRITERIA=xentstop
-STOP_CRITERIA=Rstop
-#TRAIN_FILE=fairseq_cli/train.py
+STOP_CRITERIA=xentstop
+#STOP_CRITERIA=Rstop
+TRAIN_FILE=fairseq_cli/train.py
 #TRAIN_FILE=fairseq_cli/train_midval_full.py
 #TRAIN_FILE=fairseq_cli/train2.py
 #TRAIN_FILE=fairseq_cli/train_midval.py
 #TRAIN_FILE=fairseq_cli/train_Rval_midval_cnndmlow.py
-TRAIN_FILE=fairseq_cli/train_Rval_cnndmlow.py
+#TRAIN_FILE=fairseq_cli/train_Rval_cnndmlow.py
 #TRAIN_FILE=fairseq_cli/train_Rval_midval_cnndmlow.py
 
 #TRAIN_FILE=fairseq_cli/train_CS_Rval_cnndmlow.py
@@ -93,15 +93,15 @@ TRAIN_FILE=fairseq_cli/train_Rval_cnndmlow.py
 #TRAIN_FILE=fairseq_cli/train_R3F_cossim_Rstoplow_Sbert.py
 #TRAIN_FILE=fairseq_cli/train_Ralpha_val.py
 
-CRITERIONN=r3f
+#CRITERIONN=r3f
 #CRITERIONN=r3f_wolog
 #CRITERIONN=r3f_CS0.3
 #CRITERIONN=CS0.3
-#CRITERIONN=norm
+CRITERIONN=norm
 #CRITERIONN=R_RL
 
-#TRAIN_CRITERION=label_smoothed_cross_entropy
-TRAIN_CRITERION=label_smoothed_cross_entropy_r3f
+TRAIN_CRITERION=label_smoothed_cross_entropy
+#TRAIN_CRITERION=label_smoothed_cross_entropy_r3f
 #TRAIN_CRITERION=label_smoothed_cross_entropy_r3f_cossim
 #TRAIN_CRITERION=label_smoothed_cross_entropy_cossim
 #TRAIN_CRITERION=semantic_similarity_loss
@@ -163,8 +163,8 @@ wait $!
 SAMPLE_SIZE=3000
 #CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_Forunsup.py ${SAVE_DIR}/checkpoint_best.pt 0 '' ${SAMPLE_SIZE}
 #CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_fortest_cnndm.py ${SAVE_DIR}/checkpoint_best.pt 0 True
-#CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_Forunsup.py ${SAVE_DIR}/checkpoint_best.pt 0 True
-CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_Fortest_low_cnndm.py ${SAVE_DIR}/checkpoint_best.pt 0 True
+CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_Forunsup.py ${SAVE_DIR}/checkpoint_best.pt 0 True
+#CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_Fortest_low_cnndm.py ${SAVE_DIR}/checkpoint_best.pt 0 True
 #CUDA_VISIBLE_DEVICES=${DEVICE} python ./xsum_ST/hypogen_ForFull_3bestckpts.py ${SAVE_DIR}/checkpoint_best.pt 0 True;
 ((TIMESTEP++))
 done
